@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Pizza Hut</title>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='owntest.css') }}">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Pizza Hut Menu Order System">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="WPC">
+	{% extends "layout.html" %}
+	{% block abc %}
+		<div id="flash">
+				{% for message in get_flashed_messages() %}
+				<div class="alert alert-warning">
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
+					{{ message }}
+				</div>
+				{% endfor %}
+		</div>
+
+		<div class="drinksproduct">
+
+			<div class="container">
+				<div class="row" id="Allp">
+				{% for product in rice_results  %}
+					<div class="col-lg-3 col-md-3 col-sm-3" class="carrd">
+						<div class="card mb-3" style="max-width: 20rem;">
+						  <div class="card-img-top" style="background: url('static/parsa_rice/{{product[4]}}'); background-repeat; background-size: cover; height:150px;width:100%"></div>
+						  <div class="card-body">
+						    <h4 class="card-title" style="font-size: 55%">{{ product[1] }}</h4>
+						    <p> $<a class="card-text">{{ product[3] }}</a>
+						    	<form action="/addtocart" method="POST">
+							    	<input type="hidden" name="productname" value="{{ product[1] }}">
+							    	<input type="hidden" name="productprice" value="{{ product[3] }}">
+							    	<input type="hidden" name="productnum" value="{{ product[6] }}">
+							    	<input type="hidden" name="productid" value="{{ product[0] }}">
+							    	<input type="number" style="width:50px" name="addtocartquantity" min="1" value="0">
+							    	<input type="submit" style="width:100px"name="addtocartsubmit" class="btn btn-success" value="Add to Cart">
+						    	</form>
+						  </div>
+						</div>
+					</div>
+				{% endfor %}
+				</div>
+			</div>
+		</div>
+
+		<div class="rightcontainer" style="background: white">
+	{% for i in session['cart'] %}
+		{% if 'single' in i %}
+			<hr style="border-top: 1px solid black;">
+			<div style="display: flex;" class="list-quantity list-column">
+				<span id="nameof{{ i[0] }}" >{{ i[1] }}</span>&nbsp;
+				<span id="priceof{{ i[0] }}">${{ i[2] }}</span>&nbsp;
+				<span>
+					<form action="/update" , method="POST">
+						<input class="list-quantity-input" style="width:100px" name="qt" id="quantityof{{ i[4] }}" min="1" type="number" value="{{ i[3] }}">
+						<input type="hidden" value="{{ i[0] }}" name="updateitem">
+						<input type="submit" class="btn btn-success" type="button" value="UPDATE">
+					</form>
+				</span>
+				<span>
+					<form action="/remove" , method="POST">
+						<input type="hidden" name="productname" value="{{ i[1] }}">
+						<input type="hidden" value="{{ i[0] }}" name="removeitem">
+						<input type="hidden" name="index" value="{{i[6]}}">
+						<input type="submit" class="btn btn-danger" type="button" value="REMOVE">
+					</form>
+				</span>
+			</div>
+		{% elif 'set' in i %}
+			<hr style="border-top: 1px solid black;">
+			<div style="display: flex;" class="list-quantity list-column">
+				<span id="nameof{{ i[0] }}" >{{ i[1] }}</span>&nbsp;
+				<span id="priceof{{ i[0] }}">${{ i[2] }}</span>
+				&nbsp Quantity : &nbsp<span id="quantityof{{ i[4] }}">{{i[3]}}</span>&nbsp;
+				<span>
+					<form action="/remove" , method="POST">
+						<input type="hidden" name="productname" value="{{ i[1] }}">
+						<input type="hidden" value="{{ i[0] }}" name="removeitem">
+						<input type="hidden" name="index" value="{{i[6]}}">
+						<input type="submit" class="btn btn-danger" type="button" value="REMOVE">
+					</form>
+				</span>
+			</div>
+		{% else %}
+			<div style="display: flex;" class="list-quantity list-column">
+				<hr>
+				<span id="nameof{{ i[0] }}" >{{ i[1] }}</span>&nbsp;
+				<span>Quantity   :</span>
+				<span id="quantityof{{ i[4] }}">{{ i[3] }}</span>
+
+			</div>
+		{% endif %}
+	{% endfor %}
+	<hr style="border-top: 1px solid black;">
+	<div class="row">
+		<div>
+			<button class="btn btn-success" onclick="cal()">Calulate Total Price</button>
+			<strong class="list-total-title">Total</strong>
+			<span class="list-total-price" id="totaldom">$0</span>
+		</div>
+		<div>
+			<form name="cartincertform" action="/insert", method="POST">
+			<button class="btn btn-success" onclick="checkconfirm()">Confirm</button>
+			</form>
+		</div>
+	</div>
+	&nbsp
+</div>
+		<script>
+			function cal(){
+				var total = 0
+				for (i in {{ session['cart'] | safe }}){
+					total += {{session['cart']|safe}}[i][3]*{{session['cart']|safe}}[i][2]
+					console.log(total)
+				}
+				document.getElementById('totaldom').innerHTML = "$"+total
+			}
+			function checkconfirm(){
+				console.log({{ session['cart']| safe }}.length)
+				if ( {{ session['cart']| safe }}.length == 0){
+					alert('Empty cart !')
+				}else{
+					alert('Order confirmed')
+					document.cartincertform.submit();
+				}
+			}
+		</script>
+	{% endblock %}
+</div>
+
+
+
+</body>
+</html>

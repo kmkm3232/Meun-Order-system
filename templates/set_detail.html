@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Pizza Hut</title>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='owntest.css') }}">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Pizza Hut Menu Order System">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="WPC">
+
+{% extends "layout.html" %}
+{% block abc %}
+
+{% block content %}
+	<div>
+		{% for message in get_flashed_messages() %}
+		<div class="alert alert-warning">
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			{{ message }}
+		</div>
+		{% endfor %}
+	</div>
+{% endblock %}
+
+<div class="drinksproduct">
+
+<div class="container">
+	<div>
+		<!--id for javascript, name for python><!-->
+		<form name="setforma" action="/addtocart2" , method="POST">
+			<input type="hidden" name="set_id_py" id="set_id" value="{{targetPid}}">
+			<input type="hidden" name="set_name_py" id="set_name" value="{{targetpName}}">
+			<input type="hidden" name="set_price_py" id="set_price" value="{{targetpPrice}}">
+			<input type="hidden" name="set_qty_py" id="set_qty" value="{{targetpQty}}">	
+			<input type="hidden" name="set_num_py" id="set_num" value="{{targetpnum}}">
+
+			<div class="accordion md-accordion" id="accordionEx" role="tablist" aria-multiselectable="true">
+
+				<div class="card">
+					{% if setitem_results_pizza|length %}
+						<div class="card-header" role="tab" id="headingOne1">
+							<a class="collapsed" data-toggle="collapse" data-parent="#accordionEx" href="#collapseOne1" aria-expanded="true" aria-controls="collapseOne1">
+							<h5 class="mb-0">
+								Pizza &nbsp X &nbsp{{setitem_results_pizza[0][8]}}<i class="fas fa-angle-down rotate-icon"></i>
+							</h5>
+							</a>
+						</div>
+						{% for product in setitem_results_pizza  %}
+							<div id="collapseOne1" class="collapse show" role="tabpanel" aria-labelledby="headingOne1" data-parent="#accordionEx">
+								<div class="card-body">
+									<input type="hidden" name="py_id{{product[6]}}" id="idof{{product[6]}}" value="{{product[0]}}">
+									<input type="hidden" id="typeof{{product[6]}}" value="{{product[2]}}">
+									<input type="hidden" name="py_name{{product[6]}}" id="nameof{{product[6]}}" value="{{product[1]}}">
+									<input type="hidden" name="py_num{{product[6]}}" id="productnumof{{product[6]}}" value="{{product[6]}}">
+									<input type="number" name="py_qty{{product[6]}}" id="quantity{{product[6]}}" value='0'> {{product[1]}}<br>
+								</div>
+							</div>
+						{% endfor %}
+						<input type="hidden" id="maxqtyofpizza" value="{{setitem_results_pizza[0][8]}}">
+					{% endif %}
+				</div>
+
+				<div class="card">
+					{% if setitem_results_drinks|length %}
+						<div class="card-header" role="tab" id="headingTwo2">
+							<a class="collapsed" data-toggle="collapse" data-parent="#accordionEx" href="#collapseTwo2" aria-expanded="false" aria-controls="collapseTwo2">
+							<h5 class="mb-0">
+								Drinks &nbsp X &nbsp{{setitem_results_drinks[0][8]}}<i class="fas fa-angle-down rotate-icon"></i>
+							</h5>
+							</a>
+						</div>
+						{% for product in setitem_results_drinks  %}
+							<div id="collapseTwo2" class="collapse" role="tabpanel" aria-labelledby="headingTwo2" data-parent="#accordionEx">
+								<div class="card-body">
+									<input type="hidden" name="py_id{{product[6]}}" id="idof{{product[6]}}" value="{{product[0]}}">
+									<input type="hidden" id="typeof{{product[6]}}" value="{{product[2]}}">
+									<input type="hidden" name="py_name{{product[6]}}" id="nameof{{product[6]}}" value="{{product[1]}}">
+									<input type="hidden" name="py_num{{product[6]}}" id="productnumof{{product[6]}}" value="{{product[6]}}">
+									<input type="number" name="py_qty{{product[6]}}" id="quantity{{product[6]}}" value='0'> {{product[1]}}<br>
+								</div>
+							</div>	
+						{% endfor %}
+
+						<input type="hidden" id="maxqtyofdrink" value="{{setitem_results_drinks[0][8]}}">
+					{% endif %}
+				</div>
+
+				<div class="card">
+					{% if setitem_results_snack|length %}
+						<div class="card-header" role="tab" id="headingThree3">
+							<a class="collapsed" data-toggle="collapse" data-parent="#accordionEx" href="#collapseThree3" aria-expanded="false" aria-controls="collapseThree3">
+							<h5 class="mb-0">
+								Snacks &nbsp X &nbsp{{setitem_results_snack[0][8]}}<i class="fas fa-angle-down rotate-icon"></i>
+							</h5>
+							</a>
+						</div>
+						{% for product in setitem_results_snack  %}
+						<div id="collapseThree3" class="collapse" role="tabpanel" aria-labelledby="headingThree3" data-parent="#accordionEx">
+							<div class="card-body">
+								<input type="hidden" name="py_id{{product[6]}}" id="idof{{product[6]}}" value="{{product[0]}}">
+								<input type="hidden" id="typeof{{product[6]}}" value="{{product[2]}}">
+								<input type="hidden" name="py_name{{product[6]}}" id="nameof{{product[6]}}" value="{{product[1]}}">
+								<input type="hidden" name="py_num{{product[6]}}" id="productnumof{{product[6]}}" value="{{product[6]}}">
+								<input type="number" name="py_qty{{product[6]}}" id="quantity{{product[6]}}" value='0'> {{product[1]}}<br>
+							</div>
+						</div>
+						{% endfor %}
+						<input type="hidden" id="maxqtyofsnack" value="{{setitem_results_snack[0][8]}}">
+					{% endif %}
+				</div>
+
+				<div class="card">
+					{% if setitem_results_rice|length %}
+						<div class="card-header" role="tab" id="headingFour4">
+							<a class="collapsed" data-toggle="collapse" data-parent="#accordionEx" href="#collapseFour4" aria-expanded="false" aria-controls="collapseFour4">
+							<h5 class="mb-0">
+								Rice and Spaghetti &nbsp X &nbsp{{setitem_results_rice[0][8]}}<i class="fas fa-angle-down rotate-icon"></i>
+							</h5>
+							</a>
+						</div>
+						{% for product in setitem_results_rice  %}
+						<div id="collapseFour4" class="collapse" role="tabpanel" aria-labelledby="headingFour4" data-parent="#accordionEx">
+							<div class="card-body">
+								<input type="hidden" name="py_id{{product[6]}}" id="idof{{product[6]}}" value="{{product[0]}}">
+								<input type="hidden" id="typeof{{product[6]}}" value="{{product[2]}}">
+								<input type="hidden" name="py_name{{product[6]}}" id="nameof{{product[6]}}" value="{{product[1]}}">
+								<input type="hidden" name="py_num{{product[6]}}" id="productnumof{{product[6]}}" value="{{product[6]}}">
+								<input type="number" name="py_qty{{product[6]}}" id="quantity{{product[6]}}" value='0'> {{product[1]}}<br>
+							</div>
+						</div>
+						{% endfor %}
+						<input type="hidden" id="maxqtyofrice" value="{{setitem_results_rice[0][8]}}">
+					{% endif %}
+				</div>
+
+			</div>
+
+		</form>
+
+		<button class="btn btn-success" onclick="check()">Sumbit</button>
+	</div>
+</div>
+
+</div>
+
+<div class="rightcontainer" style="background: white">
+	{% for i in session['cart'] %}
+		{% if 'single' in i %}
+			<hr style="border-top: 1px solid black;">
+			<div style="display: flex;" class="list-quantity list-column">
+				<span id="nameof{{ i[0] }}" >{{ i[1] }}</span>&nbsp;
+				<span id="priceof{{ i[0] }}">${{ i[2] }}</span>&nbsp;
+				<span>
+					<form action="/update" , method="POST">
+						<input class="list-quantity-input" style="width:100px" name="qt" id="quantityof{{ i[4] }}" min="1" type="number" value="{{ i[3] }}">
+						<input type="hidden" value="{{ i[0] }}" name="updateitem">
+						<input type="submit" class="btn btn-success" type="button" value="UPDATE">
+					</form>
+				</span>
+				<span>
+					<form action="/remove" , method="POST">
+						<input type="hidden" name="productname" value="{{ i[1] }}">
+						<input type="hidden" value="{{ i[0] }}" name="removeitem">
+						<input type="hidden" name="index" value="{{i[6]}}">
+						<input type="submit" class="btn btn-danger" type="button" value="REMOVE">
+					</form>
+				</span>
+			</div>
+		{% elif 'set' in i %}
+			<hr style="border-top: 1px solid black;">
+			<div style="display: flex;" class="list-quantity list-column">
+				<span id="nameof{{ i[0] }}" >{{ i[1] }}</span>&nbsp;
+				<span id="priceof{{ i[0] }}">${{ i[2] }}</span>
+				&nbsp Quantity : &nbsp<span id="quantityof{{ i[4] }}">{{i[3]}}</span>&nbsp;
+				<span>
+					<form action="/remove" , method="POST">
+						<input type="hidden" name="productname" value="{{ i[1] }}">
+						<input type="hidden" value="{{ i[0] }}" name="removeitem">
+						<input type="hidden" name="index" value="{{i[6]}}">
+						<input type="submit" class="btn btn-danger" type="button" value="REMOVE">
+					</form>
+				</span>
+			</div>
+		{% else %}
+			<div style="display: flex;" class="list-quantity list-column">
+				<hr>
+				<span id="nameof{{ i[0] }}" >{{ i[1] }}</span>&nbsp;
+				<span>Quantity   :</span>
+				<span id="quantityof{{ i[4] }}">{{ i[3] }}</span>
+
+			</div>
+		{% endif %}
+	{% endfor %}
+	<hr style="border-top: 1px solid black;">
+	<div class="row">
+		<div>
+			<button class="btn btn-success" onclick="cal()">Calulate Total Price</button>
+			<strong class="list-total-title">Total</strong>
+			<span class="list-total-price" id="totaldom">$0</span>
+		</div>
+		<div>
+			<form name="cartincertform" action="/insert", method="POST">
+			<button class="btn btn-success" onclick="checkconfirm()">Confirm</button>
+			</form>
+		</div>
+	</div>
+	&nbsp
+</div>
+<script>
+	function check(){
+		var userinput_pizza = 0
+		var userinput_drink = 0
+		var userinput_snack = 0
+		var userinput_rice  = 0
+		var max_pizza = 0
+		var max_drink = 0
+		var max_snack = 0
+		var max_rice = 0
+		{% if setitem_results_pizza|length %}
+			max_pizza = ({{setitem_results_pizza[0][8]}})
+		{% endif %}
+		{% if setitem_results_drinks|length %}
+			max_drink = ({{setitem_results_drinks[0][8]}})
+		{% endif %}
+		{% if setitem_results_snack|length %}
+			max_snack = ({{setitem_results_snack[0][8]}})
+		{% endif %}
+		{% if setitem_results_rice|length %}
+			max_rice = ({{setitem_results_rice[0][8]}})
+		{% endif %}
+		for (i = 1; i<999; i++){
+				if (document.getElementById("typeof"+i) != null){
+					if (document.getElementById("typeof"+i).value == 'Pizza'){
+						userinput_pizza += Number(document.getElementById("quantity"+i).value);
+						}else if (document.getElementById("typeof"+i).value == 'Drink'){
+								userinput_drink += Number(document.getElementById("quantity"+i).value);
+						}else if (document.getElementById("typeof"+i).value == 'Snack'){
+								userinput_snack += Number(document.getElementById("quantity"+i).value);
+						}else if (document.getElementById("typeof"+i).value == 'Rice & Spaghetti') {
+								userinput_rice  += Number(document.getElementById("quantity"+i).value);
+						}
+				}
+				
+		}
+		console.log(userinput_pizza,userinput_drink,userinput_snack,userinput_rice)
+		if (userinput_pizza != max_pizza){
+			alert('Invalid Pizza number')
+		}else if (userinput_drink != max_drink){
+			alert('Invalid Drink number')
+		}else if (userinput_snack != max_snack){
+			alert('Invalid Snack number')
+		}else if (userinput_rice != max_rice){
+			alert('Invalid Rice number')
+		}else{
+			alert('Right')
+			document.setforma.submit();
+
+		}
+	}
+</script>
+<script>
+	function cal(){
+		var total = 0
+		for (i in {{ session['cart'] | safe }}){
+			total += {{session['cart']|safe}}[i][3]*{{session['cart']|safe}}[i][2]
+			console.log(total)
+		}
+		document.getElementById('totaldom').innerHTML = "$"+total
+	}
+	function checkconfirm(){
+		console.log({{ session['cart']| safe }}.length)
+		if ( {{ session['cart']| safe }}.length == 0){
+			alert('Empty cart !')
+		}else{
+			alert('Order confirmed')
+			document.cartincertform.submit();
+		}
+	}
+</script>
+
+</div>
+<!--Wholepage div><!-->
+{% endblock %}
+</body>
+</html>

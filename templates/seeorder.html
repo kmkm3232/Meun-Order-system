@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Pizza Hut</title>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='owntest.css') }}">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Pizza Hut Menu Order System">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">  
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>  
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+	{% extends "layout.html" %}
+	{% block abc %}
+	{% for i in orders %}
+		<hr style="border-top: 1px solid black;">
+		<div class="row" style="padding: 25px">
+			<span>Order ID: {{ i[0] }}</span>&nbsp
+			<form action="editorders", method="POST">
+				<input type="hidden" name="edit_oid" value="{{i[0]}}">
+				<input class="btn btn-success" type="submit" type="button" value="EDIT">
+			</form>
+			<form action="removeorders", method="POST">
+				<input type="hidden" name="remove_oid"value="{{i[0]}}">
+				<input class="btn btn-danger" 	type="submit" type="button" value="REMOVE">
+			</form>
+		</div>
+	{% endfor %}
+	&nbsp
+	{% endblock %}
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+
+
+{% extends "layout.html" %}
+
+{% block abc %}
+		{% with messages = get_flashed_messages() %}
+		 	{% if messages %}
+		  		{% for message in messages %}
+		  			<div class="alert alert-warning alert-dismissible" role="alert">
+		  				{{message}}
+		  			</div>
+		 		{% endfor %}
+			{% endif %}
+		{% endwith %}
+
+<form action ="/login" method = "POST">
+<h2>Login</h2>
+Userid:<br><input type="text" name = "userid"/><p>
+Password:<br><input type="password" name = "password" />
+<p><input type="submit" value = "submit"></p>
+</form>
+<a href = '/logout'>Click here to log out</a>
+
+
+{%endblock%}
+
+</body>
+
+</html>
+
+

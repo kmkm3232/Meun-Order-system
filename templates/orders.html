@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends "layout.html" %}
+{% block abc %}
+
+{% for product in orders_results  %}
+    <h1>Order ID: {{ product[1] }}</h1>
+    <h1>Product Name: {{ product[0] }}</h1>
+    <h1>Product ID: {{ product[2] }}</h1>
+    <h1>Quantity: {{ product[3] }}</h1>
+    <h1>Price: ${{ product[4] }}</h1>
+    <h1>----------------------------------------</h1>
+{% endfor %}
+
+{% for price in price_results %}
+    <h1>Total price: {{ price[0] }}</h1>
+{% endfor %}
+
+{%endblock%}
+<body>
+
+</body>
+</html>

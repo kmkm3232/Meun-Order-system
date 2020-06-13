@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='owntest.css') }}">
+  <link rel="stylesheet" 
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+	<title></title>
+</head>
+<body>
+	<nav class="navbar sticky-top navbar-expand-sm bg-dark navbar-dark ">
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+	    <span class="navbar-toggler-icon"></span>
+	  	</button>
+		<div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+		<a class="navbar-brand" href="/index"><img src="/static/logo.png" width="100"></a>
+			<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+			<li class="nav-item active">
+				<a class="nav-link" href="http://localhost:8000/login">Login</a>
+			</li>
+			<li class="nav-item active">
+				<a class="nav-link" href="http://localhost:8000/set">Set</a>
+			</li>
+			<li class="nav-item active">
+					<a class="nav-link" href="http://localhost:8000/pizza">Pizza</a>
+			</li>
+			<li class="nav-item active">
+				<a class="nav-link" href="http://localhost:8000/rice&spaghetti">Rice&Spaghetti</a>
+			</li>
+			<li class="nav-item active">
+					<a class="nav-link" href="http://localhost:8000/snack">Snack</a>
+			</li>
+			<li class="nav-item active">
+				<a class="nav-link" href="http://localhost:8000/drinks">Drinks</a>
+			</li>
+			<li class="nav-item active">
+				<a class="nav-link" href="http://localhost:8000/seeorder">View Orders</a>
+			</li>
+			<ul class="navbar-nav ">
+			<li class="nav-item active">
+				<a class="nav-link" href="/logout">Logout</a>
+			</li>
+			</ul>
+	</nav>
+	<div>
+		{% block abc %}
+		{% endblock %}
+	</div>
+	<div class="footer">
+			<h6>Pizza Hut all rights reserved © </h6>
+	</div>
+</body>
+</html>

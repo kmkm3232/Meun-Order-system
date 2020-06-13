@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Pizza Hut</title>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='owntest.css') }}">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Pizza Hut Menu Order System">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">  
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>  
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+	{% extends "layout.html" %}
+	{% block abc %}
+		{% for i in order_detail %}
+			<h3>Order ID: {{i[0]}}, Invoice ID: {{i[1]}}, Total Price: ${{i[2]}}</h3>
+		{% endfor %}
+		{% for i in order_items_detail %}
+			{% if 'single' in i %}
+				<hr style="border-top: 1px solid black;">
+					<div class="row" style="padding: 25px;">
+					Item ID: {{i[0]}}, Product Name: {{i[1]}}, Price: {{i[3]}} &nbsp &nbsp &nbsp &nbsp
+					<form action="/updateitem", method="POST">
+						<input type="hidden" name="order" value="{{i[6]}}">
+						<input type="hidden" name="updateitem" min="1" value="{{i[5]}}">
+						Quantity: &nbsp<input type="number" name="qty" value="{{i[2]}}">
+						<input class="btn btn-success" type="submit" type="button" value="EDIT">
+					</form>
+					<form action="/delitem", method="POST">
+						<input type="hidden" name="order" value="{{i[6]}}">
+						<input type="hidden" name="delitem" value="{{i[5]}}">
+						<input class="btn btn-danger" type="submit" type="button" value="REMOVE">
+					</form>
+				</div>
+			{% elif 'set' in i %}
+				<hr style="border-top: 1px solid black;">
+				<div class="row" style="padding: 25px">
+				Item ID: {{i[0]}}, Product Name: {{i[1]}}, Price: {{i[3]}}
+				<form action="/delitem", method="POST">
+					<input type="hidden" name="order" value="{{i[6]}}">
+					<input type="hidden" name="delitem" value="{{i[5]}}">
+					&nbsp<input class="btn btn-danger" type="submit" type="button" value="REMOVE">
+				</form>
+				</div>
+			{% else %}
+				<div class="row" style="padding: 25px">
+				Item ID: {{i[0]}}, Product Name: {{i[1]}}, Quantity: {{i[2]}}
+				</div>
+			{% endif %}
+			&nbsp
+		{% endfor %}
+	{% endblock %}
+</body>
+</html>
